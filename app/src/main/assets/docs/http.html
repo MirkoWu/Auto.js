@@ -217,6 +217,16 @@ log(res.body.string());
     file: open(&quot;/sdcard/1.txt&quot;)
 });
 log(res.body.string());
+</code></pre><p>新增2021-11-19：如果想要上传多个文件，可以使用数组类型，内容则是上面三种格式都可以，代码为</p>
+<pre><code>var res = http.postMultipart(url, {
+    file: [
+            open(&quot;/sdcard/1.png&quot;),
+            [&quot;1.png&quot;,&quot;/sdcard/1.png&quot;],
+            [&quot;1.png&quot;, &quot;image/*&quot;, &quot;/sdcard/1.png&quot;]
+        ]
+});
+log(res.body.string());
+</code></pre>
 </code></pre><h2>http.request(url[, options, callback])<span><a class="mark" href="#http_http_request_url_options_callback" id="http_http_request_url_options_callback">#</a></span></h2>
 <div class="signature"><ul>
 <li><code>url</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type" class="type">&lt;string&gt;</a> 请求的URL地址，需要以&quot;<a href="http://&quot;或&quot;https://&quot;开头。如果url没有以&quot;http://&quot;开头，则默认为&quot;http://&quot;。">http://&quot;或&quot;https://&quot;开头。如果url没有以&quot;http://&quot;开头，则默认为&quot;http://&quot;。</a></li>
