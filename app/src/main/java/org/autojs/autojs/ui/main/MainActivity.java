@@ -227,7 +227,7 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     @Override
     protected void onResume() {
         super.onResume();
-        mVersionGuard.checkForDeprecatesAndUpdates();
+//        mVersionGuard.checkForDeprecatesAndUpdates();
     }
 
     @Override

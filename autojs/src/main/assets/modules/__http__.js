@@ -95,23 +95,37 @@ module.exports = function (runtime, scope) {
                 builder.addFormDataPart(key, value);
                 continue;
             }
-            var path, mimeType, fileName;
-            if (typeof (value.getPath) == 'function') {
-                path = value.getPath();
-            } else if (value.length == 2) {
-                fileName = value[0];
-                path = value[1];
-            } else if (value.length >= 3) {
-                fileName = value[0];
-                mimeType = value[1]
-                path = value[2];
+
+            if(Object.prototype.toString.call(value)=='[object Array]'){
+                for(var i = 0,len=value.length; i < len; i++) {
+                    var item= value[i];
+                    builder= addFormDataPart(builder,key,item)
+                }
+                continue;
             }
-            var file = new com.stardust.pio.PFile(path);
-            fileName = fileName || file.getName();
-            mimeType = mimeType || parseMimeType(file.getExtension());
-            builder.addFormDataPart(key, fileName, RequestBody.create(MediaType.parse(mimeType), file));
+            builder= addFormDataPart(builder,key,value)
         }
         return builder.build();
+    }
+
+    function addFormDataPart(builder,key,value){
+        var path, mimeType, fileName;
+        if (typeof (value.getPath) == 'function') {
+            console.info("addFormDataPart function=" + value.getPath);
+            path = value.getPath();
+        } else if (value.length == 2) {
+            fileName = value[0];
+            path = value[1];
+        } else if (value.length >= 3) {
+            fileName = value[0];
+            mimeType = value[1]
+            path = value[2];
+        }
+        var file = new com.stardust.pio.PFile(path);
+        fileName = fileName || file.getName();
+        mimeType = mimeType || parseMimeType(file.getExtension());
+        builder.addFormDataPart(key, fileName, RequestBody.create(MediaType.parse(mimeType), file));
+        return builder;
     }
 
     function parseMimeType(ext) {
